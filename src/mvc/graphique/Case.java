@@ -16,12 +16,8 @@ public class Case{
     
     private ImageView img;
     
-    public Case() {
-         Image image = new Image(getClass().getResource("/Images/mine.png").toExternalForm());
- 
-         // simple displays ImageView the image as is
-         img = new ImageView();
-         img.setImage(image);
+    public Case(String choix) {
+         this.setImage(choix);
     }
     
     public ImageView getImage() {

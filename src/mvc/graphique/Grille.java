@@ -41,8 +41,7 @@ public class Grille {
         for(int i = 0; i < nbCase; i++) {
             for(int j = 0; j < nbCase; j++) {
                 final HBox pictureRegion = new HBox();
-                Case cell = new Case();
-                cell.setImage("drapeau");
+                Case cell = new Case("drapeau");
                 pictureRegion.getChildren().add(cell.getImage());
                 gPane.add(pictureRegion, i, j);
 
