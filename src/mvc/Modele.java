@@ -7,7 +7,6 @@ package mvc;
 
 import java.util.Observable;
 import java.util.Random;
-import mvc.libInterpreteurExpr.Node;
 
 /**
  *
@@ -109,6 +108,14 @@ public class Modele extends Observable {
         }
     }
     
+    //Vérification du contenu de la case
+    public int verifCase(int x, int y)
+    {
+        if(grille[x][y] == 9) return -1;
+        else if(grille[x][y] == 0) return 0;
+        else return 1;
+    }
+    
     //Affichage console de la matrice
     public void afficherMatrice()
     {
@@ -121,5 +128,6 @@ public class Modele extends Observable {
             System.out.println();
         }
     }
+
     
 }
