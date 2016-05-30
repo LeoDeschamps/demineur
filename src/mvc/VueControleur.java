@@ -27,6 +27,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import mvc.graphique.Grille;
 
 /**
  *
@@ -35,9 +36,11 @@ import javafx.scene.text.TextAlignment;
 public class VueControleur extends Application {
     
     // modèle : ce qui réalise le calcule de l'expression
-    Modele m;
+    private Modele m;
     // affiche la saisie et le résultat
-    Text affichage;
+    private Text affichage;
+    // grille : ce qui est affiché à l'écran
+    private Grille grille;
     
     @Override
     public void start(Stage primaryStage) {
@@ -45,31 +48,22 @@ public class VueControleur extends Application {
         // initialisation du modèle que l'on souhaite utiliser
         m = new Modele();
         
-        // gestion du placement (permet de palcer le champ Text affichage en haut, et GridPane gPane au centre)
-        BorderPane border = new BorderPane();
+        //Initialisation de la grille graphique
+        grille = new Grille(10);
         
-        // permet de placer les diffrents boutons dans une grille
-        GridPane gPane = new GridPane();
-        
-        int column = 0;
-        int row = 0;
         
         
         affichage = new Text("");
         affichage.setFont(Font.font ("Verdana", 20));
         affichage.setFill(Color.RED);
-        border.setTop(affichage);
+        /*border.setTop(affichage);*/
         
         // la vue observe les "update" du modèle, et réalise les mises à jour graphiques
         m.addObserver(new Observer() {
             
             @Override
             public void update(Observable o, Object arg) {
-                if (!m.getErr()) {
-                    affichage.setText(m.getValue() + "");
-                } else {
-                    affichage.setText("Err");
-                }
+                
             }
         });
         
@@ -83,58 +77,11 @@ public class VueControleur extends Application {
             
         });
         
-        // création des bouton et placement dans la grille
-        for (String s : new String[]{"7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "+", "0", "(", ")"}) {
-            final Text t = new Text(s);
-            t.setWrappingWidth(30);
-            t.setFont(Font.font ("Verdana", 20));
-            t.setTextAlignment(TextAlignment.CENTER);
-            
-            gPane.add(t, column++, row);
-            
-            if (column > 3) {
-                column = 0;
-                row++;
-            }
-            
-            // un controleur (EventHandler) par bouton écoute et met à jour le champ affichage
-            t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                
-                @Override
-                public void handle(MouseEvent event) {
-                    affichage.setText(affichage.getText() + t.getText());
-                }
-                
-            });
-            
-            
-            
-        }
+        Scene scene = grille.getScene();
         
-        
-        
-        final Text t = new Text("=");
-        t.setWrappingWidth(30);
-        gPane.add(t, column++, row);
-        t.setTextAlignment(TextAlignment.CENTER);
-        //t.setEffect(new Shadow());
-        
-        // un controleur écoute le bouton "=" et déclenche l'appel du modèle
-        t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            
-            @Override
-            public void handle(MouseEvent event) {
-                m.calc(affichage.getText());
-            }
-        });
-        
-        gPane.setGridLinesVisible(true);
-        
-        border.setCenter(gPane);
-        
-        Scene scene = new Scene(border, Color.LIGHTBLUE);
-        
-        primaryStage.setTitle("Calc FX");
+        primaryStage.setWidth(600);
+        primaryStage.setHeight(600);
+        primaryStage.setTitle("Démineur");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
