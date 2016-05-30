@@ -29,30 +29,6 @@ public class Modele extends Observable {
         this.nbrMine = mines;
         this.id_mine = 9;
     }
-
-    
-    
-    /*public void calc(String expr) {
-        StringBuffer input;
-        StringBuffer output;
-        Node toto;
-
-        input = new StringBuffer(expr);
-        output = new StringBuffer(255);
-
-        toto = Node.Construct_Tree(input, input.length(), 0);
-        if (toto != null) {
-            toto.Write_Tree(output);
-            lastValue = toto.Compute_Tree(0, 0, 0);
-            err = false;
-        } else {
-            err = true;
-        }
-        
-        // notification de la vue, suite à la mise à jour du champ lastValue
-        setChanged();
-        notifyObservers();
-    }*/
     
     public void genererMatrice(int taille_grille)
     {
@@ -128,6 +104,4 @@ public class Modele extends Observable {
             System.out.println();
         }
     }
-
-    
 }
