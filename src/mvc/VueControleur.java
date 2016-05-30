@@ -27,6 +27,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import model.Matrice;
 import mvc.graphique.Grille;
 
 /**
@@ -36,7 +37,7 @@ import mvc.graphique.Grille;
 public class VueControleur extends Application {
     
     // modèle : ce qui réalise le calcule de l'expression
-    private Modele m;
+    private Matrice m;
     // affiche la saisie et le résultat
     private Text affichage;
     // grille : ce qui est affiché à l'écran
@@ -46,11 +47,10 @@ public class VueControleur extends Application {
     public void start(Stage primaryStage) {
         
         // initialisation du modèle que l'on souhaite utiliser
-        m = new Modele(50, 100);
+        m = new Matrice(10, 20);
         
         //Initialisation de la grille graphique
-        grille = new Grille(10);
-        
+        grille = new Grille(m);
         
         
         affichage = new Text("");
@@ -80,7 +80,7 @@ public class VueControleur extends Application {
         Scene scene = grille.getScene();
         
         // création des bouton et placement dans la grille
-        m.genererMatrice(50);
+        m.genererMatrice();
         m.afficherMatrice();
         
         
