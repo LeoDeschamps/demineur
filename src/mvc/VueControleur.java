@@ -50,7 +50,7 @@ public class VueControleur extends Application {
     public void start(Stage primaryStage) {
         
         // initialisation du modèle que l'on souhaite utiliser
-        m = new Matrice(nbCase, 20);
+        m = new Matrice(nbCase);
         
         //Initialisation de la grille graphique
         grille = new Grille(m);
@@ -87,7 +87,7 @@ public class VueControleur extends Application {
         m.afficherMatrice();
         
         
-        primaryStage.setWidth(nbCase*30+15);
+        primaryStage.setWidth(nbCase*30+150);
         primaryStage.setHeight((nbCase+1)*30+10);
         primaryStage.setTitle("Démineur");
         primaryStage.setScene(scene);

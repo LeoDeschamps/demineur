@@ -20,11 +20,11 @@ public class Matrice extends Observable {
     
     Random rand = new Random();
     
-    public Matrice(int taille, int mines)
+    public Matrice(int taille)
     {
         this.taille_grille = taille;
         grille = new Case[taille_grille][taille_grille];
-        this.nbrMine = mines;
+        this.nbrMine = taille;
         this.id_mine = 9;
     }
     
@@ -89,7 +89,7 @@ public class Matrice extends Observable {
         {
             for(int j=0; j<taille_grille;j++)
             {
-                System.out.print(grille[i][j].getValue());
+                System.out.print(grille[j][i].getValue());
             }
             System.out.println();
         }
@@ -99,7 +99,7 @@ public class Matrice extends Observable {
     {
         if(grille[x][y].getValue() == 9) return -1;
         else if(grille[x][y].getValue() == 0) return 0;
-        else return 1;
+        else return grille[x][y].getValue();
     }
     
     public int getTaille()

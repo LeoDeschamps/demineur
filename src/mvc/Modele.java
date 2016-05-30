@@ -6,7 +6,6 @@
 package mvc;
 
 import java.util.Observable;
-import java.util.Random;
 import mvc.graphique.Grille;
 
 /**

@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 public class Case{
     
     private ImageView img;
+    private String nomImg;
     
     public Case(String choix) {
          this.setImage(choix);
@@ -26,6 +27,7 @@ public class Case{
     
     public void setImage(String choix)
     {
+        nomImg = choix;
         if("vide".equals(choix))
         {
             Image image = new Image(getClass().getResource("/Images/vide.png").toExternalForm());     
@@ -46,5 +48,10 @@ public class Case{
             img = new ImageView();
             img.setImage(image);
         }
+    }
+    
+    public String getNomImg()
+    {
+        return this.nomImg;
     }
 }

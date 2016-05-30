@@ -8,11 +8,18 @@ package mvc.graphique;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderImage;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.Matrice;
@@ -25,11 +32,8 @@ import mvc.Modele;
 public class Grille {
     
     private int nbCase;
-    private final int tailleCase = 50;
     private Scene scene;
     private Matrice m;
-    private int row;
-    private int column;
     GridPane gPane;
     
     public Grille(Matrice m)
@@ -51,6 +55,7 @@ public class Grille {
             for(int j = 0; j < nbCase; j++) {
                 int x = i;
                 int y = j;
+                
                 final HBox pictureRegion = new HBox();
                 Case cell = new Case("vide");
                 pictureRegion.getChildren().add(cell.getImage());
@@ -61,9 +66,25 @@ public class Grille {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        devoilerCases(x, y);
-                        
-                        
+                        if(event.getButton() == MouseButton.PRIMARY) {
+                            devoilerCases(x, y);
+                        }
+                        else if(event.getButton() == MouseButton.SECONDARY)
+                        {
+                            System.out.println(cell.getNomImg());
+                            if(!"drapeau".equals(cell.getNomImg())) {
+                                cell.setImage("drapeau");
+                                pictureRegion.getChildren().clear();
+                                pictureRegion.getChildren().add(cell.getImage());
+                                gPane.add(pictureRegion, x, y);
+                            }
+                            else {
+                                cell.setImage("vide");
+                                pictureRegion.getChildren().clear();
+                                pictureRegion.getChildren().add(cell.getImage());
+                                gPane.add(pictureRegion, x, y);
+                            }
+                        } 
                     }
                 });
             }
@@ -86,11 +107,22 @@ public class Grille {
         m.getCase(x, y).setReturned(true);
         if(m.verifCase(x, y) == -1)
         {
-            System.out.println("MINE");
+            final HBox pictureRegion = new HBox();
+            Case cell = new Case("mine");
+            pictureRegion.getChildren().add(cell.getImage());
+            gPane.add(pictureRegion, x, y);
         }
         else if(m.verifCase(x, y) == 0)
         {
-            System.out.println("dévoilage récursif");
+            final HBox pictureRegion = new HBox();
+            Text t = new Text(" ");
+            t.setTextAlignment(TextAlignment.CENTER);
+            t.setWrappingWidth(30);
+            pictureRegion.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE,CornerRadii.EMPTY,Insets.EMPTY)));
+            pictureRegion.setStyle("-fx-border-color: #7f7f7f;");
+            pictureRegion.getChildren().add(t);
+            gPane.add(pictureRegion, x, y);
+            
             if(x-1>=0 && m.getContenuCase(x-1, y) != m.getIdMine() && !m.getCase(x-1, y).getReturned())
             {
                 devoilerCases(x-1, y);
@@ -110,7 +142,16 @@ public class Grille {
         }
         else
         {
-            System.out.println("juste à coté");
+            final HBox pictureRegion = new HBox();
+            Text t = new Text(String.valueOf(m.verifCase(x, y)));
+            t.setTextAlignment(TextAlignment.CENTER);
+            t.setWrappingWidth(30);
+            t.setFont(new Font(15));
+            t.setFill(Color.RED);
+            pictureRegion.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE,CornerRadii.EMPTY,Insets.EMPTY)));
+            pictureRegion.setStyle("-fx-border-color: #7f7f7f;");
+            pictureRegion.getChildren().add(t);
+            gPane.add(pictureRegion, x, y);
         }
     }
 }
