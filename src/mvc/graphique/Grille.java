@@ -6,13 +6,13 @@
 package mvc.graphique;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 /**
  *
@@ -37,15 +37,17 @@ public class Grille {
         
         // permet de placer les diffrents boutons dans une grille
         GridPane gPane = new GridPane();
-        gPane.resize(600, 600);
+
         for(int i = 0; i < nbCase; i++) {
             for(int j = 0; j < nbCase; j++) {
-                Text t = new Text(" ");
-                gPane.add(t, i, j);
-                t.setTextAlignment(TextAlignment.CENTER);
+                final HBox pictureRegion = new HBox();
+                Case cell = new Case();
+                cell.setImage("drapeau");
+                pictureRegion.getChildren().add(cell.getImage());
+                gPane.add(pictureRegion, i, j);
 
                 // un controleur écoute le bouton et déclenche l'appel du modèle
-                t.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                pictureRegion.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                     @Override
                     public void handle(MouseEvent event) {
@@ -55,9 +57,6 @@ public class Grille {
             }
         }
         
-        gPane.setPrefSize(600, 600);
-        gPane.setMinSize(600, 600);
-        System.out.println("H : " + gPane.getHeight() + " W : " + gPane.getWidth());
         gPane.setGridLinesVisible(true);
         
         border.setCenter(gPane);
