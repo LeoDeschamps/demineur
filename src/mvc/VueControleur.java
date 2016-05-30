@@ -46,7 +46,7 @@ public class VueControleur extends Application {
     public void start(Stage primaryStage) {
         
         // initialisation du modèle que l'on souhaite utiliser
-        m = new Modele();
+        m = new Modele(50, 100);
         
         //Initialisation de la grille graphique
         grille = new Grille(10);
@@ -79,6 +79,11 @@ public class VueControleur extends Application {
         
         Scene scene = grille.getScene();
         
+        // création des bouton et placement dans la grille
+        m.genererMatrice(50);
+        m.afficherMatrice();
+        
+        
         primaryStage.setWidth(600);
         primaryStage.setHeight(600);
         primaryStage.setTitle("Démineur");
@@ -86,6 +91,8 @@ public class VueControleur extends Application {
         primaryStage.show();
     }
 
+    
+    
     /**
      * @param args the command line arguments
      */
