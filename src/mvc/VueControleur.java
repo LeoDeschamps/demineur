@@ -43,11 +43,14 @@ public class VueControleur extends Application {
     // grille : ce qui est affiché à l'écran
     private Grille grille;
     
+    //Nombre de cases : 
+    private final int nbCase = 10;
+    
     @Override
     public void start(Stage primaryStage) {
         
         // initialisation du modèle que l'on souhaite utiliser
-        m = new Matrice(10, 20);
+        m = new Matrice(nbCase, 20);
         
         //Initialisation de la grille graphique
         grille = new Grille(m);
@@ -84,8 +87,8 @@ public class VueControleur extends Application {
         m.afficherMatrice();
         
         
-        primaryStage.setWidth(600);
-        primaryStage.setHeight(600);
+        primaryStage.setWidth(nbCase*30+15);
+        primaryStage.setHeight((nbCase+1)*30+10);
         primaryStage.setTitle("Démineur");
         primaryStage.setScene(scene);
         primaryStage.show();
