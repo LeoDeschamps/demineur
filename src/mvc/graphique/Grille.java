@@ -5,19 +5,22 @@
  */
 package mvc.graphique;
 
+import java.awt.Menu;
+import java.awt.MenuBar;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -35,6 +38,9 @@ public class Grille {
     private Scene scene;
     private Matrice m;
     GridPane gPane;
+    private boolean aPerdu;
+    private boolean aGagne;
+    private HBox root;
     
     public Grille(Matrice m)
     {
@@ -46,7 +52,21 @@ public class Grille {
     public void initialise() {
         
         // gestion du placement (permet de palcer le champ Text affichage en haut, et GridPane gPane au centre)
-        BorderPane border = new BorderPane();
+        root = new HBox();
+        
+        
+        BorderPane top = new BorderPane();
+        VBox block = new VBox();
+        
+        MenuBar menuBar = new MenuBar();
+ 
+        // --- Menu File
+        Menu options = new Menu("Options");
+ 
+        menuBar.add(options);
+        //top.setTop((Node) menuBar);
+        //block.getChildren().addAll(menuBar, top);
+        root.getChildren().add(top);
         
         // permet de placer les diffrents boutons dans une grille
         gPane = new GridPane();
@@ -66,25 +86,29 @@ public class Grille {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        if(event.getButton() == MouseButton.PRIMARY) {
-                            devoilerCases(x, y);
+                        if(!aPerdu && !aGagne) {
+                            if(event.getButton() == MouseButton.PRIMARY) {
+                                devoilerCases(x, y);
+                            }
+                            else if(event.getButton() == MouseButton.SECONDARY)
+                            {
+                                System.out.println(cell.getNomImg());
+                                if(!"drapeau".equals(cell.getNomImg())) {
+                                    m.getCase(x, y).setFlag(true);
+                                    cell.setImage("drapeau");
+                                    pictureRegion.getChildren().clear();
+                                    pictureRegion.getChildren().add(cell.getImage());
+                                    gPane.add(pictureRegion, x, y);
+                                }
+                                else {
+                                    cell.setImage("vide");
+                                    m.getCase(x, y).setFlag(false);
+                                    pictureRegion.getChildren().clear();
+                                    pictureRegion.getChildren().add(cell.getImage());
+                                    gPane.add(pictureRegion, x, y);
+                                }
+                            } 
                         }
-                        else if(event.getButton() == MouseButton.SECONDARY)
-                        {
-                            System.out.println(cell.getNomImg());
-                            if(!"drapeau".equals(cell.getNomImg())) {
-                                cell.setImage("drapeau");
-                                pictureRegion.getChildren().clear();
-                                pictureRegion.getChildren().add(cell.getImage());
-                                gPane.add(pictureRegion, x, y);
-                            }
-                            else {
-                                cell.setImage("vide");
-                                pictureRegion.getChildren().clear();
-                                pictureRegion.getChildren().add(cell.getImage());
-                                gPane.add(pictureRegion, x, y);
-                            }
-                        } 
                     }
                 });
             }
@@ -92,9 +116,9 @@ public class Grille {
         
         gPane.setGridLinesVisible(true);
         
-        border.setCenter(gPane);
+        root.getChildren().add(gPane);
         
-        this.scene = new Scene(border, Color.LIGHTGRAY);
+        this.scene = new Scene(root, Color.LIGHTGRAY);
     }
     
     public Scene getScene()
@@ -104,7 +128,10 @@ public class Grille {
     
     public void devoilerCases(int x, int y)
     {
-        m.getCase(x, y).setReturned(true);
+        model.Case c = m.getCase(x, y);
+        c.setReturned(true);
+        aPerdu = m.estUneMine(c);
+        aGagne = m.aGagne();
         if(m.verifCase(x, y) == -1)
         {
             final HBox pictureRegion = new HBox();
@@ -153,5 +180,32 @@ public class Grille {
             pictureRegion.getChildren().add(t);
             gPane.add(pictureRegion, x, y);
         }
+        
+        if(aPerdu || aGagne){
+            afficheScore();
+        }
+    }
+    
+    public void afficheScore()
+    {
+        Text score;
+        
+        if(aPerdu) {
+            System.out.println("Vous avez perdu !");
+            score = new Text("Vous avez perdu ...");
+        }
+        else {
+            System.out.println("Vous avez gagné !");
+            score = new Text("Vous avez gagné !");
+        }
+        
+        VBox affichage = new VBox();
+        affichage.setSpacing(10);
+        affichage.setPadding(new Insets(0, 10, 10, 10)); 
+        affichage.getChildren().addAll(score);
+        
+        affichage.setAlignment(Pos.CENTER);
+        
+        root.getChildren().add(affichage);
     }
 }

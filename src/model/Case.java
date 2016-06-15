@@ -13,6 +13,7 @@ public class Case {
     
     private int value;
     private boolean returned;
+    private boolean flag = false;
     
     public Case()
     {
@@ -39,4 +40,14 @@ public class Case {
     {
         return this.returned;
     }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+    
+    
 }

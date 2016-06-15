@@ -17,6 +17,8 @@ public class Matrice extends Observable {
     int taille_grille;
     int nbrMine;
     int id_mine; 
+    boolean aPerdu = false;
+    boolean aGagne = false;
     
     Random rand = new Random();
     
@@ -120,5 +122,35 @@ public class Matrice extends Observable {
     public Case getCase(int x, int y)
     {
         return grille[x][y];
+    }
+    
+    public boolean estUneMine(Case c)
+    {
+        if(c.getValue() == 9)
+        {
+            aPerdu = true;
+        }
+        
+        return aPerdu;
+    }
+    
+    public boolean aGagne()
+    {
+        int noReturned = 0;
+        for(int i = 0; i < taille_grille; i++) {
+            for(int j = 0; j < taille_grille; j++){
+                Case c = grille[i][j];
+                
+                if(!c.getReturned())
+                {
+                    noReturned++;
+                }
+            }
+        }
+        
+        if(noReturned == taille_grille)
+            aGagne = true;
+        
+        return aGagne;
     }
 }
